@@ -76,5 +76,4 @@ interface AdapterInterface
      * @param PointInterface $to
      */
     public function crop(PointInterface $from, PointInterface $to);
-
 }
