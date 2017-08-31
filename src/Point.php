@@ -40,7 +40,6 @@ class Point implements PointInterface
      */
     public function getX()
     {
-
     }
 
     /**
@@ -50,6 +49,5 @@ class Point implements PointInterface
      */
     public function getY()
     {
-
     }
 }

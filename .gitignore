@@ -1,2 +1,5 @@
 vendor/
 nbproject/
+.Vagrantfile
+coverage/
+Vagrantfile
