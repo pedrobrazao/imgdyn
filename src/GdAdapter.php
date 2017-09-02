@@ -322,11 +322,11 @@ class GdAdapter implements AdapterInterface
      */
     public function crop(PointInterface $from, PointInterface $to)
     {
-        if (1 > $width = $from->getX() - $to->getX()) {
+        if (1 > $width = $to->getX() - $from->getX()) {
             throw new InvalidArgumentException('Cropping an image requires a positive width.');
         }
 
-        if (1 > $height = $from->getY() - $to->getY()) {
+        if (1 > $height = $to->getY() - $from->getY()) {
             throw new InvalidArgumentException('Cropping an image requires a positive height.');
         }
 
