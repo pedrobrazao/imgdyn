@@ -79,6 +79,9 @@ interface AdapterInterface
      *
      * @param int $width
      * @param int $height
+     * @return void
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function resize($width, $height);
 

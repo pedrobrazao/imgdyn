@@ -236,10 +236,35 @@ class GdAdapter implements AdapterInterface
      *
      * @param int $width
      * @param int $height
+     * @return void
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function resize($width, $height)
     {
+        if ($width < 1) {
+            throw new InvalidArgumentException('Image width must be greater than 0.');
+        }
 
+        if ($height < 1) {
+            throw new InvalidArgumentException('Image height must be greater than 0.');
+        }
+
+        if (false === $resource = imagecreatetruecolor($this->width, $this->height)) {
+            throw new RuntimeException('Unable to create new image resource using GD library.');
+        }
+
+        if (false === imagecopyresampled($resource, $this->getResource(), 0, 0, 0, 0, $width, $height, $this->width, $this->height)) {
+            throw new RuntimeException('Unable to resample image using GD library.');
+        }
+
+        if (false === imagedestroy($this->resource)) {
+            throw new RuntimeException('Unable to destroy image resource using GD library.');
+        }
+
+        $this->resource = $resource;
+        $this->width = $width;
+        $this->height = $height;
     }
 
     /**
