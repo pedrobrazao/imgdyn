@@ -40,7 +40,7 @@ class Point implements PointInterface
      */
     public function getX()
     {
-
+        return $this->x;
     }
 
     /**
@@ -50,6 +50,6 @@ class Point implements PointInterface
      */
     public function getY()
     {
-
+        return $this->y;
     }
 }
