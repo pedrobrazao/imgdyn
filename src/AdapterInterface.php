@@ -5,9 +5,12 @@ namespace ImgDyn;
 interface AdapterInterface
 {
 
-    const TYPE_JPG = 1;
-    const TYPE_PNG = 2;
-    const TYPE_GIF = 3;
+    /**
+     * Image types supported.
+     */
+    const TYPE_GIF = 1;
+    const TYPE_JPG = 2;
+    const TYPE_PNG = 4;
 
     /**
      * Get image width.
@@ -41,6 +44,9 @@ interface AdapterInterface
      * Load the content of a file into the image.
      *
      * @param string $file
+     * @return void
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function load($file);
 

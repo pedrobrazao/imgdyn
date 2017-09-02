@@ -109,10 +109,43 @@ class GdAdapter implements AdapterInterface
      * Load the content of a file into the image.
      *
      * @param string $file
+     * @return void
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function load($file)
     {
+        if (false === file_exists($file) || false === is_readable($file)) {
+            throw new InvalidArgumentException(sprintf('File "%s" does not exist or is not readable.'));
+        }
 
+        if (false === $info = getimagesize($file)) {
+            throw new InvalidArgumentException(sprintf('File "%s" is not an image.'));
+        }
+
+        if (false === $type = $info[2]) {
+            throw new InvalidArgumentException(sprintf('File "%s" iamge type is not supported.'));
+        }
+
+        $this->type = (int) $type;
+        $this->width = (int) $info[0];
+        $this->height = (int) $info[1];
+
+        switch ($type) {
+            case AdapterInterface::TYPE_GIF :
+                $this->resource = imagecreatefromgif($file);
+                break;
+            case AdapterInterface::TYPE_JPG :
+                $this->resource = imagecreatefromjpeg($file);
+                break;
+            case AdapterInterface::TYPE_PNG :
+                $this->resource = imagecreatefrompng($file);
+                break;
+        }
+
+        if (false === $this->resource) {
+            throw new RuntimeException('Unable to create image resource using GD library.');
+        }
     }
 
     /**
@@ -210,19 +243,30 @@ class GdAdapter implements AdapterInterface
     }
 
     /**
+     * Checks either type is valid or not.
+     *
+     * @param int $type
+     * @return bool
+     */
+    protected function isValidType($type)
+    {
+        $allowedTypes = [
+            AdapterInterface::TYPE_JPG,
+            AdapterInterface::TYPE_PNG,
+            AdapterInterface::TYPE_GIF,
+        ];
+
+        return in_array((int) $type, $allowedTypes);
+    }
+
+    /**
      * Set image type.
      *
      * @param int $type
      */
     public function setType($type)
     {
-        $allowed = [
-            AdapterInterface::TYPE_JPG,
-            AdapterInterface::TYPE_PNG,
-            AdapterInterface::TYPE_GIF,
-        ];
-
-        if (false === in_array((int) $type, $allowed)) {
+        if (false === $this->isValidType($type)) {
             throw new InvalidArgumentException('Invalid type provided.');
         }
 
