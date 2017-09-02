@@ -51,4 +51,29 @@ class GdAdapterTest extends TestCase
         $adapter->setBackgroundColor($color);
         $this->assertSame($color, $adapter->getBackgroundColor());
     }
+
+    public function testTypeIsOptional()
+    {
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+        $this->assertTrue(is_int($adapter->getType()));
+
+        $type = \ImgDyn\AdapterInterface::TYPE_GIF;
+        $adapter->setType($type);
+        $this->assertSame($type, $adapter->getType());
+    }
+
+    public function testBadTypeValueRaisesException()
+    {
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+        $this->expectException(\InvalidArgumentException::class);
+        $adapter->setType('png');
+    }
+
+    public function testUnsupportedTypeRaisesException()
+    {
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+        $this->expectException(\InvalidArgumentException::class);
+        $adapter->setType(0);
+    }
+
 }

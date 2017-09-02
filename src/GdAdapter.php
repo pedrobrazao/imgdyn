@@ -23,20 +23,29 @@ class GdAdapter implements AdapterInterface
     private $backgroundColor;
 
     /**
+     * @var int
+     */
+    private $type;
+
+    /**
      * Create new instance of adapter.
      *
      * @param int $width
      * @param int $height
      * @param ColorInterface $backgroundColor
+     * @param int $type
      * @throws InvalidArgumentException
      */
-    public function __construct($width, $height, ColorInterface $backgroundColor = null)
+    public function __construct($width, $height, ColorInterface $backgroundColor = null, $type = AdapterInterface::TYPE_PNG)
     {
         if (null === $backgroundColor) {
             $backgroundColor = new Color();
         }
 
-        $this->setWidth($width)->setHeight($height)->setBackgroundColor($backgroundColor);
+        $this->setWidth($width)
+                ->setHeight($height)
+                ->setBackgroundColor($backgroundColor)
+                ->setType($type);
     }
 
     /**
@@ -141,7 +150,7 @@ class GdAdapter implements AdapterInterface
      */
     public function getType()
     {
-
+        return $this->type;
     }
 
     /**
@@ -151,7 +160,23 @@ class GdAdapter implements AdapterInterface
      */
     public function setType($type)
     {
+        if (false === is_int($type)) {
+            throw new InvalidArgumentException('Type must be an integer value.');
+        }
 
+        $allowed = [
+            AdapterInterface::TYPE_JPG,
+            AdapterInterface::TYPE_PNG,
+            AdapterInterface::TYPE_GIF,
+        ];
+
+        if (false === in_array($type, $allowed)) {
+            throw new InvalidArgumentException('Invalid type provided.');
+        }
+
+        $this->type = $type;
+
+        return $this;
     }
 
     /**
