@@ -15,7 +15,8 @@
     "require-dev": {
         "ext-xdebug": "*",
         "phpunit/phpunit": "^5.0",
-        "squizlabs/php_codesniffer": "^3.0"
+        "squizlabs/php_codesniffer": "^3.0",
+        "symfony/var-dumper": "^3.3"
     },
     "suggest": {
         "ext-gd": "*",

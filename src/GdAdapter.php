@@ -142,6 +142,40 @@ class GdAdapter implements AdapterInterface
     }
 
     /**
+     * Get raw contents of the image.
+     *
+     * @return string
+     * @throws RuntimeException
+     */
+    protected function raw()
+    {
+        ob_start();
+
+        switch ($this->type) {
+            case AdapterInterface::TYPE_JPG :
+                $result = imagejpeg($this->getResource());
+                break;
+
+            case AdapterInterface::TYPE_PNG :
+                $result = imagepng($this->getResource());
+                break;
+
+            case AdapterInterface::TYPE_GIF :
+                $result = imagegif($this->getResource());
+                break;
+        }
+
+        $raw = ob_get_contents();
+        ob_end_clean();
+
+        if (false === $result) {
+            throw new RuntimeException('Unable to get image contents.');
+        }
+
+        return $raw;
+    }
+
+    /**
      * Save the image to a file.
      *
      * @param string $file
@@ -150,21 +184,7 @@ class GdAdapter implements AdapterInterface
      */
     public function save($file)
     {
-        switch ($this->type) {
-            case AdapterInterface::TYPE_JPG :
-                $result = imagejpeg($this->getResource(), $file);
-                break;
-
-            case AdapterInterface::TYPE_PNG :
-                $result = imagepng($this->getResource(), $file);
-                break;
-
-            case AdapterInterface::TYPE_GIF :
-                $result = imagegif($this->getResource(), $file);
-                break;
-        }
-
-        if (false === $result) {
+        if (false === file_put_contents($file, $this->raw())) {
             throw new RuntimeException(sprintf('Unable to save image to file "%s".', $file));
         }
     }
@@ -176,7 +196,7 @@ class GdAdapter implements AdapterInterface
      */
     public function output()
     {
-
+        return base64_encode($this->raw());
     }
 
     /**

@@ -2,25 +2,25 @@
 
 namespace ImgDyn;
 
-function imagejpeg($resource, $filename)
+function imagejpeg($resource, $filename = null, $quality = null)
 {
     if (null !== \ImgDynTests\GdAdapterTest::$imagejpegReturns) {
         return \ImgDynTests\GdAdapterTest::$imagejpegReturns;
     }
 
-    return \imagejpeg($resource, $filename);
+    return \imagejpeg($resource, $filename, $quality);
 }
 
-function imagepng($resource, $filename)
+function imagepng($resource, $filename = null, $quality = null)
 {
     if (null !== \ImgDynTests\GdAdapterTest::$imagepngReturns) {
         return \ImgDynTests\GdAdapterTest::$imagepngReturns;
     }
 
-    return \imagepng($resource, $filename);
+    return \imagepng($resource, $filename, $quality);
 }
 
-function imagegif($resource, $filename)
+function imagegif($resource, $filename = null)
 {
     if (null !== \ImgDynTests\GdAdapterTest::$imagegifReturns) {
         return \ImgDynTests\GdAdapterTest::$imagegifReturns;
@@ -145,6 +145,30 @@ class GdAdapterTest extends TestCase
         self::$imagegifReturns = false;
         $this->expectException(\RuntimeException::class);
         $adapter->save('image.gif');
+    }
+
+    public function testOutputReturnsBase64String()
+    {
+//        $width = 10;
+//        $height = 10;
+//
+//        $red = $green = $blue = 0;
+//        $alpha = 127;
+//
+//        $resource = imagecreatetruecolor($width, $height);
+//        imagecolorallocatealpha($resource, $red, $green, $blue, $alpha);
+//
+//        ob_start();
+//        imagepng($resource);
+//        $contents = ob_get_contents();
+//        ob_end_clean();
+//
+//        $expected = base64_encode($contents);
+//
+//        $backgroundColor = new \ImgDyn\Color($red, $green, $blue, $alpha / 127);
+//        $adapter = new \ImgDyn\GdAdapter($width, $height, $backgroundColor, \ImgDyn\AdapterInterface::TYPE_PNG);
+//
+//        $this->assertEquals($expected, $adapter->output());
     }
 
 }
