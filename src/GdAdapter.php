@@ -250,7 +250,7 @@ class GdAdapter implements AdapterInterface
             throw new InvalidArgumentException('Image height must be greater than 0.');
         }
 
-        if (false === $resource = imagecreatetruecolor($this->width, $this->height)) {
+        if (false === $resource = imagecreatetruecolor($width, $height)) {
             throw new RuntimeException('Unable to create new image resource using GD library.');
         }
 
@@ -272,10 +272,34 @@ class GdAdapter implements AdapterInterface
      *
      * @param PointInterface $from
      * @param PointInterface $to
+     * @return void
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function crop(PointInterface $from, PointInterface $to)
     {
+        if (1 > $width = $from->getX() - $to->getX()) {
+            throw new InvalidArgumentException('Cropping an image requires a positive width.');
+        }
 
+        if (1 > $height = $from->getY() - $to->getY()) {
+            throw new InvalidArgumentException('Cropping an image requires a positive height.');
+        }
+
+        if (false === $resource = imagecreatetruecolor($width, $height)) {
+            throw new RuntimeException('Unable to create new image resource using GD library.');
+        }
+
+        if (false === imagecopy($resource, $this->getResource(), 0, 0, $from->getX(), $from->getY(), $width, $height)) {
+            throw new RuntimeException('Unable to copy image using GD library.');
+        }
+
+        if (false === imagedestroy($this->resource)) {
+            throw new RuntimeException('Unable to destroy image resource using GD library.');
+        }
+
+        $this->resource = $resource;
+        $this->width = $width;
+        $this->height = $height;
     }
-
 }
