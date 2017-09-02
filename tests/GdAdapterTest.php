@@ -92,13 +92,6 @@ class GdAdapterTest extends TestCase
         $this->assertSame($type, $adapter->getType());
     }
 
-    public function testBadTypeValueRaisesException()
-    {
-        $adapter = new \ImgDyn\GdAdapter(10, 10);
-        $this->expectException(\InvalidArgumentException::class);
-        $adapter->setType('png');
-    }
-
     public function testUnsupportedTypeRaisesException()
     {
         $adapter = new \ImgDyn\GdAdapter(10, 10);

@@ -216,21 +216,17 @@ class GdAdapter implements AdapterInterface
      */
     public function setType($type)
     {
-        if (false === is_int($type)) {
-            throw new InvalidArgumentException('Type must be an integer value.');
-        }
-
         $allowed = [
             AdapterInterface::TYPE_JPG,
             AdapterInterface::TYPE_PNG,
             AdapterInterface::TYPE_GIF,
         ];
 
-        if (false === in_array($type, $allowed)) {
+        if (false === in_array((int) $type, $allowed)) {
             throw new InvalidArgumentException('Invalid type provided.');
         }
 
-        $this->type = $type;
+        $this->type = (int) $type;
 
         return $this;
     }
