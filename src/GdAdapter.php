@@ -38,30 +38,23 @@ class GdAdapter implements AdapterInterface
      */
     public function __construct($width, $height, ColorInterface $backgroundColor = null, $type = AdapterInterface::TYPE_PNG)
     {
-        if (null === $backgroundColor) {
-            $backgroundColor = new Color();
-        }
-
-        $this->setWidth($width)
-                ->setHeight($height)
-                ->setBackgroundColor($backgroundColor)
-                ->setType($type);
-    }
-
-    /**
-     * Set image canvas width.
-     *
-     * @param int $width
-     */
-    public function setWidth($width)
-    {
         if ($width <= 0) {
             throw new InvalidArgumentException('Width of image must be greater than 0.');
         }
 
-        $this->width = (int) $width;
+        if ($height <= 0) {
+            throw new InvalidArgumentException('Height of image must be greater than 0.');
+        }
 
-        return $this;
+        if (null === $backgroundColor) {
+            $backgroundColor = new Color();
+        }
+
+        $this->width = (int) $width;
+        $this->height = (int) $height;
+        $this->backgroundColor = $backgroundColor;
+
+        $this->setType($type);
     }
 
     /**
@@ -72,22 +65,6 @@ class GdAdapter implements AdapterInterface
     public function getWidth()
     {
         return $this->width;
-    }
-
-    /**
-     * Set image canvas height.
-     *
-     * @param int $height
-     */
-    public function setHeight($height)
-    {
-        if ($height <= 0) {
-            throw new InvalidArgumentException('Height of image must be greater than 0.');
-        }
-
-        $this->height = (int) $height;
-
-        return $this;
     }
 
     /**

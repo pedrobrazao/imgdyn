@@ -9,25 +9,11 @@ interface AdapterInterface
     const TYPE_GIF = 3;
 
     /**
-     * Set image canvas width.
-     *
-     * @param int $width
-     */
-    public function setWidth($width);
-
-    /**
      * Get image width.
      *
      * @return int
      */
     public function getWidth();
-
-    /**
-     * Set image canvas height.
-     *
-     * @param int $height
-     */
-    public function setHeight($height);
 
     /**
      * Get image height.
