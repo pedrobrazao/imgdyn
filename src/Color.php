@@ -7,15 +7,36 @@ use InvalidArgumentException;
 class Color implements ColorInterface
 {
 
+    /**
+     * @var int
+     */
     private $red;
 
+    /**
+     * @var int
+     */
     private $green;
 
+    /**
+     * @var int
+     */
     private $blue;
 
+    /**
+     * @var float
+     */
     private $alpha;
 
-    public function __construct($red = 0, $green = 0, $blue = 0, $alpha = 1)
+    /**
+     * Create new instance of Color.
+     *
+     * @param int $red
+     * @param int $green
+     * @param int $blue
+     * @param float $alpha
+     * @throws InvalidArgumentException
+     */
+    public function __construct($red = 0, $green = 0, $blue = 0, $alpha = 1.0)
     {
         if ($red < 0 || $red > 255) {
             throw new InvalidArgumentException('Value "red" must be between 0 and 255');
@@ -39,7 +60,6 @@ class Color implements ColorInterface
         $this->alpha = (float) $alpha;
     }
 
-
     /**
      * Get Red value (0-255)
      *
@@ -47,7 +67,6 @@ class Color implements ColorInterface
      */
     public function getRed()
     {
-
         return $this->red;
     }
 
@@ -58,7 +77,6 @@ class Color implements ColorInterface
      */
     public function getGreen()
     {
-
         return $this->green;
     }
 
@@ -69,7 +87,6 @@ class Color implements ColorInterface
      */
     public function getBlue()
     {
-
         return $this->blue;
     }
 
@@ -80,7 +97,6 @@ class Color implements ColorInterface
      */
     public function getAlpha()
     {
-
         return $this->alpha;
     }
 }
