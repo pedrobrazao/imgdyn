@@ -27,11 +27,16 @@ class GdAdapter implements AdapterInterface
      *
      * @param int $width
      * @param int $height
+     * @param ColorInterface $backgroundColor
      * @throws InvalidArgumentException
      */
-    public function __construct($width, $height)
+    public function __construct($width, $height, ColorInterface $backgroundColor = null)
     {
-        $this->setWidth($width)->setHeight($height);
+        if (null === $backgroundColor) {
+            $backgroundColor = new Color();
+        }
+
+        $this->setWidth($width)->setHeight($height)->setBackgroundColor($backgroundColor);
     }
 
     /**
@@ -94,6 +99,8 @@ class GdAdapter implements AdapterInterface
     public function setBackgroundColor(ColorInterface $color)
     {
         $this->backgroundColor = $color;
+
+        return $this;
     }
 
     /**

@@ -26,4 +26,29 @@ class GdAdapterTest extends TestCase
         $this->assertEquals($newHeight, $adapter->getHeight());
     }
 
+    public function testNegativeWidthRaiseException()
+    {
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $adapter->setWidth(-1);
+    }
+
+    public function testNegativeHeightRaiseException()
+    {
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $adapter->setHeight(-1);
+    }
+
+    public function testBackgroundColorIsOptional()
+    {
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+        $this->assertInstanceOf(\ImgDyn\ColorInterface::class, $adapter->getBackgroundColor());
+
+        $color = new \ImgDyn\Color(255, 128, 0, .5);
+        $adapter->setBackgroundColor($color);
+        $this->assertSame($color, $adapter->getBackgroundColor());
+    }
 }
