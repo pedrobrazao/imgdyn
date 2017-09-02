@@ -5,10 +5,6 @@ namespace ImgDyn;
 interface ImageInterface extends AdapterInterface
 {
 
-    const TYPE_JPG = 1;
-    const TYPE_PNG = 2;
-    const TYPE_GIF = 3;
-
     /**
      * Resize the image width and adjust height proportionally.
      *
