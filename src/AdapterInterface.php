@@ -90,6 +90,9 @@ interface AdapterInterface
      *
      * @param PointInterface $from
      * @param PointInterface $to
+     * @return void
+     * @throws InvalidArgumentException
+     * @throws RuntimeException
      */
     public function crop(PointInterface $from, PointInterface $to);
 }
