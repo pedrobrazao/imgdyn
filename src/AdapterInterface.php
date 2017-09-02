@@ -44,7 +44,7 @@ interface AdapterInterface
      * Load the content of a file into the image.
      *
      * @param string $file
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
@@ -54,7 +54,7 @@ interface AdapterInterface
      * Save the image to a file.
      *
      * @param string $file
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws \RuntimeException
      */
     public function save($file);
@@ -85,7 +85,7 @@ interface AdapterInterface
      *
      * @param int $width
      * @param int $height
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
@@ -96,7 +96,7 @@ interface AdapterInterface
      *
      * @param PointInterface $from
      * @param PointInterface $to
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */

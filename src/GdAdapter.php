@@ -109,7 +109,7 @@ class GdAdapter implements AdapterInterface
      * Load the content of a file into the image.
      *
      * @param string $file
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
@@ -146,6 +146,8 @@ class GdAdapter implements AdapterInterface
         if (false === $this->resource) {
             throw new RuntimeException('Unable to create image resource using GD library.');
         }
+
+        return $this;
     }
 
     /**
@@ -212,7 +214,7 @@ class GdAdapter implements AdapterInterface
      * Save the image to a file.
      *
      * @param string $file
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws \RuntimeException
      */
     public function save($file)
@@ -220,6 +222,8 @@ class GdAdapter implements AdapterInterface
         if (false === file_put_contents($file, $this->raw())) {
             throw new RuntimeException(sprintf('Unable to save image to file "%s".', $file));
         }
+
+        return $this;
     }
 
     /**
@@ -280,7 +284,7 @@ class GdAdapter implements AdapterInterface
      *
      * @param int $width
      * @param int $height
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
@@ -309,6 +313,8 @@ class GdAdapter implements AdapterInterface
         $this->resource = $resource;
         $this->width = $width;
         $this->height = $height;
+
+        return $this;
     }
 
     /**
@@ -316,7 +322,7 @@ class GdAdapter implements AdapterInterface
      *
      * @param PointInterface $from
      * @param PointInterface $to
-     * @return void
+     * @return \ImgDyn\AdapterInterface
      * @throws InvalidArgumentException
      * @throws RuntimeException
      */
@@ -345,5 +351,7 @@ class GdAdapter implements AdapterInterface
         $this->resource = $resource;
         $this->width = $width;
         $this->height = $height;
+
+        return $this;
     }
 }
