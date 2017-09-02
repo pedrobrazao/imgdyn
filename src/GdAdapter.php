@@ -3,6 +3,7 @@
 namespace ImgDyn;
 
 use InvalidArgumentException;
+use RuntimeException;
 
 class GdAdapter implements AdapterInterface
 {
@@ -26,6 +27,11 @@ class GdAdapter implements AdapterInterface
      * @var int
      */
     private $type;
+
+    /**
+     * @var resource
+     */
+    private $resource;
 
     /**
      * Create new instance of adapter.
@@ -110,12 +116,65 @@ class GdAdapter implements AdapterInterface
     }
 
     /**
-     * Optionally save the image to a file and returns its contents encoded as Base64 string.
+     * Get image resource.
      *
-     * @param string|null $file
+     * @return resource
+     * @throws RuntimeException
+     */
+    protected function getResource()
+    {
+        if (null === $this->resource) {
+            if (false === $this->resource = imagecreatetruecolor($this->width, $this->height)) {
+                throw new RuntimeException('Unable to create image using GD library.');
+            }
+
+            $red = $this->getBackgroundColor()->getRed();
+            $green = $this->getBackgroundColor()->getGreen();
+            $blue = $this->getBackgroundColor()->getBlue();
+            $alpha = (int) min([127, round(127 * $this->getBackgroundColor()->getAlpha(), 0)]);
+
+            if (false === imagecolorallocatealpha($this->resource, $red, $green, $blue, $alpha)) {
+                throw new RuntimeException('Unable to allocate background color using GD library.');
+            }
+        }
+
+        return $this->resource;
+    }
+
+    /**
+     * Save the image to a file.
+     *
+     * @param string $file
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function save($file)
+    {
+        switch ($this->type) {
+            case AdapterInterface::TYPE_JPG :
+                $result = imagejpeg($this->getResource(), $file);
+                break;
+
+            case AdapterInterface::TYPE_PNG :
+                $result = imagepng($this->getResource(), $file);
+                break;
+
+            case AdapterInterface::TYPE_GIF :
+                $result = imagegif($this->getResource(), $file);
+                break;
+        }
+
+        if (false === $result) {
+            throw new RuntimeException(sprintf('Unable to save image to file "%s".', $file));
+        }
+    }
+
+    /**
+     * Output image contents as a Base64 encoded string.
+     *
      * @return string
      */
-    public function save($file = null)
+    public function output()
     {
 
     }

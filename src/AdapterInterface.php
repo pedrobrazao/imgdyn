@@ -4,6 +4,7 @@ namespace ImgDyn;
 
 interface AdapterInterface
 {
+
     const TYPE_JPG = 1;
     const TYPE_PNG = 2;
     const TYPE_GIF = 3;
@@ -44,12 +45,20 @@ interface AdapterInterface
     public function load($file);
 
     /**
-     * Optionally save the image to a file and returns its contents encoded as Base64 string.
+     * Save the image to a file.
      *
-     * @param string|null $file
+     * @param string $file
+     * @return void
+     * @throws \RuntimeException
+     */
+    public function save($file);
+
+    /**
+     * Output image contents as a Base64 encoded string.
+     *
      * @return string
      */
-    public function save($file = null);
+    public function output();
 
     /**
      * Get image type.

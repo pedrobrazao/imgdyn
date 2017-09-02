@@ -1,11 +1,53 @@
 <?php
 
+namespace ImgDyn;
+
+function imagejpeg($resource, $filename)
+{
+    if (null !== \ImgDynTests\GdAdapterTest::$imagejpegReturns) {
+        return \ImgDynTests\GdAdapterTest::$imagejpegReturns;
+    }
+
+    return \imagejpeg($resource, $filename);
+}
+
+function imagepng($resource, $filename)
+{
+    if (null !== \ImgDynTests\GdAdapterTest::$imagepngReturns) {
+        return \ImgDynTests\GdAdapterTest::$imagepngReturns;
+    }
+
+    return \imagepng($resource, $filename);
+}
+
+function imagegif($resource, $filename)
+{
+    if (null !== \ImgDynTests\GdAdapterTest::$imagegifReturns) {
+        return \ImgDynTests\GdAdapterTest::$imagegifReturns;
+    }
+
+    return \imagegif($resource, $filename);
+}
+
 namespace ImgDynTests;
 
 use PHPUnit\Framework\TestCase;
 
 class GdAdapterTest extends TestCase
 {
+
+    public static $imagejpegReturns;
+    public static $imagepngReturns;
+    public static $imagegifReturns;
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+
+        self::$imagejpegReturns = null;
+        self::$imagepngReturns = null;
+        self::$imagegifReturns = null;
+    }
 
     public function testSetAndGetCanvasDimensions()
     {
@@ -62,6 +104,47 @@ class GdAdapterTest extends TestCase
         $adapter = new \ImgDyn\GdAdapter(10, 10);
         $this->expectException(\InvalidArgumentException::class);
         $adapter->setType(0);
+    }
+
+    public function testSaveJpegImage()
+    {
+        self::$imagejpegReturns = true;
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+        $adapter->setType(\ImgDyn\AdapterInterface::TYPE_JPG);
+
+        $this->assertNull($adapter->save('image.jpg'));
+
+        self::$imagejpegReturns = false;
+        $this->expectException(\RuntimeException::class);
+        $adapter->save('image.jpg');
+    }
+
+    public function testSavePngImage()
+    {
+        self::$imagepngReturns = true;
+
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+        $adapter->setType(\ImgDyn\AdapterInterface::TYPE_PNG);
+
+        $this->assertNull($adapter->save('image.png'));
+
+        self::$imagepngReturns = false;
+        $this->expectException(\RuntimeException::class);
+        $adapter->save('image.png');
+    }
+
+    public function testSaveGifImage()
+    {
+        self::$imagegifReturns = true;
+
+        $adapter = new \ImgDyn\GdAdapter(10, 10);
+        $adapter->setType(\ImgDyn\AdapterInterface::TYPE_GIF);
+
+        $this->assertNull($adapter->save('image.gif'));
+
+        self::$imagegifReturns = false;
+        $this->expectException(\RuntimeException::class);
+        $adapter->save('image.gif');
     }
 
 }
