@@ -18,6 +18,11 @@ class GdAdapter implements AdapterInterface
     private $height;
 
     /**
+     * @var \ImgDyn\ColorInterface
+     */
+    private $backgroundColor;
+
+    /**
      * Create new instance of adapter.
      *
      * @param int $width
@@ -79,6 +84,26 @@ class GdAdapter implements AdapterInterface
     public function getHeight()
     {
         return $this->height;
+    }
+
+    /**
+     * Set image background color.
+     *
+     * @param \ImgDyn\ColorInterface $color
+     */
+    public function setBackgroundColor(ColorInterface $color)
+    {
+        $this->backgroundColor = $color;
+    }
+
+    /**
+     * Get image background color.
+     *
+     * @return \ImgDyn\ColorInterface
+     */
+    public function getBackgroundColor()
+    {
+        return $this->backgroundColor;
     }
 
     /**

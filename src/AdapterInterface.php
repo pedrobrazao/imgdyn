@@ -33,6 +33,20 @@ interface AdapterInterface
     public function getHeight();
 
     /**
+     * Set image background color.
+     *
+     * @param \ImgDyn\ColorInterface $color
+     */
+    public function setBackgroundColor(ColorInterface $color);
+
+    /**
+     * Get image background color.
+     *
+     * @return \ImgDyn\ColorInterface
+     */
+    public function getBackgroundColor();
+
+    /**
      * Load the content of a file into the image.
      *
      * @param string $file
