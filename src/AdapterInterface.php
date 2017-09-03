@@ -77,6 +77,8 @@ interface AdapterInterface
      * Set image type.
      *
      * @param int $type
+     * @return \ImgDyn\AdapterInterface
+     * @throws InvalidArgumentException
      */
     public function setType($type);
 

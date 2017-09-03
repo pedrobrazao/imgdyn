@@ -267,6 +267,8 @@ class GdAdapter implements AdapterInterface
      * Set image type.
      *
      * @param int $type
+     * @return \ImgDyn\AdapterInterface
+     * @throws InvalidArgumentException
      */
     public function setType($type)
     {
@@ -275,6 +277,7 @@ class GdAdapter implements AdapterInterface
         }
 
         $this->type = (int) $type;
+        $this->resource = null;
 
         return $this;
     }
