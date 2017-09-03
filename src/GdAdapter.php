@@ -283,6 +283,16 @@ class GdAdapter implements AdapterInterface
     }
 
     /**
+     * Get size of the image in bytes.
+     *
+     * @return int
+     */
+    public function getSize()
+    {
+        return strlen($this->raw());
+    }
+
+    /**
      * Resize the image dimensions.
      *
      * @param int $width

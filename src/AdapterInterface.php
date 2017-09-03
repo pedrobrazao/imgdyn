@@ -83,6 +83,13 @@ interface AdapterInterface
     public function setType($type);
 
     /**
+     * Get size of the image in bytes.
+     *
+     * @return int
+     */
+    public function getSize();
+
+    /**
      * Resize the image dimensions.
      *
      * @param int $width
