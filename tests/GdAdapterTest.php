@@ -344,7 +344,8 @@ class GdAdapterTest extends TestCase
         $to = new \ImgDyn\Point(90, 50);
 
         $newWidth = $to->getX() - $from->getX();
-        $newHeight = $to->getY() - $from->getY();;
+        $newHeight = $to->getY() - $from->getY();
+        ;
 
         $adapter->crop($from, $to);
 

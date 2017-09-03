@@ -145,13 +145,13 @@ class GdAdapter implements AdapterInterface
         }
 
         switch ($info[2]) {
-            case AdapterInterface::TYPE_GIF :
+            case AdapterInterface::TYPE_GIF:
                 $this->resource = imagecreatefromgif($file);
                 break;
-            case AdapterInterface::TYPE_JPG :
+            case AdapterInterface::TYPE_JPG:
                 $this->resource = imagecreatefromjpeg($file);
                 break;
-            case AdapterInterface::TYPE_PNG :
+            case AdapterInterface::TYPE_PNG:
                 $this->resource = imagecreatefrompng($file);
                 break;
         }
@@ -204,15 +204,15 @@ class GdAdapter implements AdapterInterface
         ob_start();
 
         switch ($this->type) {
-            case AdapterInterface::TYPE_JPG :
+            case AdapterInterface::TYPE_JPG:
                 $result = imagejpeg($this->getResource());
                 break;
 
-            case AdapterInterface::TYPE_PNG :
+            case AdapterInterface::TYPE_PNG:
                 $result = imagepng($this->getResource());
                 break;
 
-            case AdapterInterface::TYPE_GIF :
+            case AdapterInterface::TYPE_GIF:
                 $result = imagegif($this->getResource());
                 break;
         }
