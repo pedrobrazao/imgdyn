@@ -10,7 +10,7 @@ interface AdapterInterface
      */
     const TYPE_GIF = 1;
     const TYPE_JPG = 2;
-    const TYPE_PNG = 4;
+    const TYPE_PNG = 3;
 
     /**
      * Get image width.
@@ -74,20 +74,20 @@ interface AdapterInterface
     public function getType();
 
     /**
-     * Set image type.
-     *
-     * @param int $type
-     * @return \ImgDyn\AdapterInterface
-     * @throws InvalidArgumentException
-     */
-    public function setType($type);
-
-    /**
      * Get size of the image in bytes.
      *
      * @return int
      */
     public function getSize();
+
+    /**
+     * Export current image to a different type.
+     *
+     * @param int $type
+     * @return \ImgDyn\AdapterInterface
+     * @throws InvalidArgumentException
+     */
+    public function export($type);
 
     /**
      * Resize the image dimensions.

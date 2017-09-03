@@ -36,14 +36,24 @@ class GdAdapter implements AdapterInterface
     /**
      * Create new instance of adapter.
      *
-     * @param int $width
-     * @param int $height
-     * @param ColorInterface $backgroundColor
-     * @param int $type
+     * Use first argument to load an image from a file which fills dimensions
+     * and type from the loaded image. Alternatively set first argument to null
+     * provide width and height to create a new empty image.
+     *
+     * @param string $file
+     * @param int|null $width
+     * @param int|null $height
+     * @param int|null $type
+     * @param ColorInterface|null $backgroundColor
      * @throws InvalidArgumentException
      */
-    public function __construct($width, $height, ColorInterface $backgroundColor = null, $type = AdapterInterface::TYPE_PNG)
+    public function __construct($file, $width = null, $height = null, $type = null, ColorInterface $backgroundColor = null)
     {
+        if (null !== $file) {
+            $this->load($file);
+            return;
+        }
+
         if ($width <= 0) {
             throw new InvalidArgumentException('Width of image must be greater than 0.');
         }
@@ -52,15 +62,22 @@ class GdAdapter implements AdapterInterface
             throw new InvalidArgumentException('Height of image must be greater than 0.');
         }
 
+        if (null === $type) {
+            $type = AdapterInterface::TYPE_PNG;
+        }
+
+        if (false === $this->isValidType($type)) {
+            throw new InvalidArgumentException('Unsupported image type provided.');
+        }
+
         if (null === $backgroundColor) {
             $backgroundColor = new Color();
         }
 
         $this->width = (int) $width;
         $this->height = (int) $height;
+        $this->type = (int) $type;
         $this->backgroundColor = $backgroundColor;
-
-        $this->setType($type);
     }
 
     /**
@@ -116,22 +133,18 @@ class GdAdapter implements AdapterInterface
     public function load($file)
     {
         if (false === file_exists($file) || false === is_readable($file)) {
-            throw new InvalidArgumentException(sprintf('File "%s" does not exist or is not readable.'));
+            throw new InvalidArgumentException(sprintf('File "%s" does not exist or is not readable.', $file));
         }
 
         if (false === $info = getimagesize($file)) {
-            throw new InvalidArgumentException(sprintf('File "%s" is not an image.'));
+            throw new InvalidArgumentException(sprintf('File "%s" is not an image.', $file));
         }
 
-        if (false === $type = $info[2]) {
-            throw new InvalidArgumentException(sprintf('File "%s" iamge type is not supported.'));
+        if (false === $this->isValidType($info[2])) {
+            throw new InvalidArgumentException(sprintf('File "%s" iamge type is not supported.', $file));
         }
 
-        $this->type = (int) $type;
-        $this->width = (int) $info[0];
-        $this->height = (int) $info[1];
-
-        switch ($type) {
+        switch ($info[2]) {
             case AdapterInterface::TYPE_GIF :
                 $this->resource = imagecreatefromgif($file);
                 break;
@@ -146,6 +159,10 @@ class GdAdapter implements AdapterInterface
         if (false === $this->resource) {
             throw new RuntimeException('Unable to create image resource using GD library.');
         }
+
+        $this->width = (int) $info[0];
+        $this->height = (int) $info[1];
+        $this->type = (int) $info[2];
 
         return $this;
     }
@@ -264,25 +281,6 @@ class GdAdapter implements AdapterInterface
     }
 
     /**
-     * Set image type.
-     *
-     * @param int $type
-     * @return \ImgDyn\AdapterInterface
-     * @throws InvalidArgumentException
-     */
-    public function setType($type)
-    {
-        if (false === $this->isValidType($type)) {
-            throw new InvalidArgumentException('Invalid type provided.');
-        }
-
-        $this->type = (int) $type;
-        $this->resource = null;
-
-        return $this;
-    }
-
-    /**
      * Get size of the image in bytes.
      *
      * @return int
@@ -290,6 +288,24 @@ class GdAdapter implements AdapterInterface
     public function getSize()
     {
         return strlen($this->raw());
+    }
+
+    /**
+     * Export current image to a different type.
+     *
+     * @param int $type
+     * @return \ImgDyn\AdapterInterface
+     * @throws InvalidArgumentException
+     */
+    public function export($type)
+    {
+        if (false === $this->isValidType($type)) {
+            throw new InvalidArgumentException('Invalid type provided.');
+        }
+
+        $this->type = (int) $type;
+
+        return $this;
     }
 
     /**
