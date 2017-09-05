@@ -131,10 +131,10 @@ interface ImageLayerInterface
      * Add new layer to the top of the image.
      *
      * @param \ImgDyn\ImageLayerInterface $layer
-     * @param string $name
+     * @param string|null $name
      * @return \ImgDyn\ImageInterface
      */
-    public function addLayer(ImageLayerInterface $layer, $name);
+    public function addLayer(ImageLayerInterface $layer, $name = null);
 
     /**
      * Check either a layer exists by name.

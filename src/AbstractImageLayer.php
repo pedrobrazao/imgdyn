@@ -247,14 +247,36 @@ abstract class AbstractImageLayer
     }
 
     /**
+     * Generate new unique layer name.
+     *
+     * @return string
+     */
+    protected function generateLayerName()
+    {
+        $counter = count($this->layers) + 1;
+        $name = 'layer' . $counter;
+
+        while (true === isset($this->layers[$name])) {
+            $counter++;
+            $name = 'layer' . $count;
+        }
+
+        return $name;
+    }
+
+    /**
      * Add new layer to the top of the image.
      *
      * @param \ImgDyn\ImageLayerInterface $layer
-     * @param string $name
+     * @param string|null $name
      * @return \ImgDyn\ImageInterface
      */
-    public function addLayer(ImageLayerInterface $layer, $name)
+    public function addLayer(ImageLayerInterface $layer, $name = null)
     {
+        if (null === $name) {
+            $name = $this->generateLayerName();
+        }
+
         $this->layers[$name] = $layer;
 
         return $this;
@@ -308,4 +330,5 @@ abstract class AbstractImageLayer
     {
         return $this->layers;
     }
+
 }
