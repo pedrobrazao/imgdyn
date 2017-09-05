@@ -2,8 +2,6 @@
 
 namespace ImgDyn;
 
-use InvalidArgumentException;
-
 class Point implements PointInterface
 {
 
@@ -25,10 +23,6 @@ class Point implements PointInterface
      */
     public function __construct($x, $y)
     {
-        if ($x < 0 || $y < 0) {
-            throw new InvalidArgumentException('Both coordinates X and Y must a non-negative integer.');
-        }
-
         $this->x = (int) $x;
         $this->y = (int) $y;
     }
